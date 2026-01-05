@@ -1,588 +1,1052 @@
-import { useState } from "react";
-import { motion } from "motion/react";
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Github, 
-  ExternalLink, 
-  Music, 
-  Guitar,
-  Disc3,
-  Headphones,
-  Code2,
-  GraduationCap,
-  Briefcase,
-  Award,
-  Sparkles
-} from "lucide-react";
-import { ImageWithFallback } from "./components/figma/ImageWithFallback";
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>曺 現煌 (CHO HYUNHWANG) - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-export default function App() {
-  const [activeSection, setActiveSection] = useState<string>("motivation");
+        body {
+            font-family: 'Yu Gothic', 'Hiragino Sans', 'Meiryo', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #e3f2fd 0%, #e8f5e9 50%, #e3f2fd 100%);
+            min-height: 100vh;
+        }
 
-  const sections = [
-    { id: "motivation", label: "志望動機・自己PR", icon: Sparkles },
-    { id: "projects", label: "プロジェクト", icon: Code2 },
-    { id: "history", label: "学歴・職歴・資格", icon: GraduationCap },
-    { id: "skills", label: "スキル・特技", icon: Music },
-  ];
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
+        .bg-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            animation-duration: 15s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1
-    }
-  };
+        .blob-1 {
+            width: 300px;
+            height: 300px;
+            background: #2196f3;
+            top: 10%;
+            left: 10%;
+            animation-name: float1;
+        }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-blue-100">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-20 left-10 w-64 h-64 bg-blue-300/20 rounded-full blur-3xl"
-          animate={{
-            y: [0, 50, 0],
-            x: [0, 30, 0],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-10 w-80 h-80 bg-green-300/20 rounded-full blur-3xl"
-          animate={{
-            y: [0, -50, 0],
-            x: [0, -30, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 w-96 h-96 bg-blue-200/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      </div>
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: #4caf50;
+            bottom: 10%;
+            right: 10%;
+            animation-name: float2;
+            animation-duration: 20s;
+        }
 
-      {/* Header */}
-      <motion.header 
-        className="relative bg-gradient-to-r from-blue-600 via-green-500 to-blue-600 text-white py-16 px-6 overflow-hidden"
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        {/* Musical Notes Decoration */}
-        <div className="absolute inset-0 opacity-10">
-          <Music className="absolute top-10 left-10 w-12 h-12 rotate-12" />
-          <Guitar className="absolute bottom-10 right-20 w-16 h-16 -rotate-12" />
-          <Disc3 className="absolute top-20 right-10 w-10 h-10 animate-spin" style={{ animationDuration: '10s' }} />
-          <Headphones className="absolute bottom-20 left-20 w-14 h-14" />
+        .blob-3 {
+            width: 350px;
+            height: 350px;
+            background: #64b5f6;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-name: float3;
+            animation-duration: 25s;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 80px) scale(1.1); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-50px, -80px) scale(1.15); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) scale(1.2) rotate(180deg); }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            background: linear-gradient(135deg, #1976d2 0%, #4caf50 50%, #1976d2 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+            color: white;
+            padding: 4rem 2rem;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .musical-icons {
+            position: absolute;
+            inset: 0;
+            opacity: 0.15;
+        }
+
+        .musical-icon {
+            position: absolute;
+            font-size: 3rem;
+        }
+
+        .icon-1 { top: 10%; left: 5%; animation: rotate 10s linear infinite; }
+        .icon-2 { bottom: 10%; right: 10%; animation: rotate 15s linear infinite reverse; }
+        .icon-3 { top: 20%; right: 5%; animation: pulse 3s ease-in-out infinite; }
+        .icon-4 { bottom: 20%; left: 10%; animation: bounce 2s ease-in-out infinite; }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.15; }
+            50% { transform: scale(1.2); opacity: 0.25; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            object-fit: cover;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .header-info {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.3);
+        }
+
+        .wave-decoration {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            animation: slideDown 0.5s ease-out 0.5s both;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+            min-width: max-content;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 2rem;
+            background: #f5f5f5;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .nav-btn:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #2196f3, #4caf50);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(33,150,243,0.4);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, #2196f3, #4caf50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        h2 {
+            color: #1976d2;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .text-content {
+            color: #555;
+            line-height: 2;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        /* Project Cards */
+        .project-card {
+            border-left: 6px solid #2196f3;
+        }
+
+        .project-card:nth-child(2) {
+            border-left-color: #4caf50;
+        }
+
+        .project-tagline {
+            display: inline-block;
+            background: linear-gradient(135deg, #2196f3, #4caf50);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .project-meta {
+            background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .project-meta strong {
+            color: #1976d2;
+        }
+
+        .project-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .project-list li {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .project-list li::before {
+            content: "";
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: #2196f3;
+            border-radius: 50%;
+            margin-top: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .project-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .project-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .github-link {
+            background: #24292e;
+        }
+
+        .github-link:hover {
+            background: #1a1e22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(36,41,46,0.4);
+        }
+
+        .ppt-link {
+            background: linear-gradient(135deg, #2196f3, #4caf50);
+        }
+
+        .ppt-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(33,150,243,0.4);
+        }
+
+        /* History Section */
+        .history-group {
+            margin-bottom: 3rem;
+        }
+
+        .history-item {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #e3f2fd, transparent);
+            border-left: 4px solid #2196f3;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .history-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(33,150,243,0.2);
+        }
+
+        .history-period {
+            color: #2196f3;
+            font-weight: 600;
+        }
+
+        .history-status {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .history-detail {
+            color: #555;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .skill-tag {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #2196f3, #4caf50);
+            color: white;
+            border-radius: 2rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(33,150,243,0.3);
+            transition: all 0.3s;
+            animation: popIn 0.5s ease-out backwards;
+        }
+
+        .skill-tag:nth-child(1) { animation-delay: 0.1s; }
+        .skill-tag:nth-child(2) { animation-delay: 0.2s; }
+        .skill-tag:nth-child(3) { animation-delay: 0.3s; }
+        .skill-tag:nth-child(4) { animation-delay: 0.4s; }
+        .skill-tag:nth-child(5) { animation-delay: 0.5s; }
+        .skill-tag:nth-child(6) { animation-delay: 0.6s; }
+        .skill-tag:nth-child(7) { animation-delay: 0.7s; }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(33,150,243,0.5);
+        }
+
+        .specialty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .specialty-card {
+            background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .specialty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(33,150,243,0.2);
+        }
+
+        .specialty-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #1976d2;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Links */
+        .external-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .external-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .github-card {
+            background: #24292e;
+            color: white;
+        }
+
+        .github-card:hover {
+            background: #1a1e22;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(36,41,46,0.3);
+        }
+
+        .blog-card {
+            background: linear-gradient(135deg, #2196f3, #4caf50);
+            color: white;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(33,150,243,0.4);
+        }
+
+        .link-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .link-url {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            background: linear-gradient(135deg, #1976d2 0%, #4caf50 50%, #1976d2 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-subtitle {
+            margin-top: 0.5rem;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .nav-container {
+                padding: 1rem;
+            }
+
+            main {
+                padding: 2rem 1rem;
+            }
+
+            .history-item {
+                padding: 1rem;
+            }
+
+            @media (min-width: 640px) {
+                .project-meta {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .history-item {
+                    flex-direction: row;
+                }
+
+                .history-period {
+                    min-width: 200px;
+                }
+
+                .history-status {
+                    min-width: 80px;
+                }
+            }
+        }
+
+        /* Icons using Unicode */
+        .icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="bg-blob blob-1"></div>
+        <div class="bg-blob blob-2"></div>
+        <div class="bg-blob blob-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="musical-icons">
+            <div class="musical-icon icon-1">🎵</div>
+            <div class="musical-icon icon-2">🎸</div>
+            <div class="musical-icon icon-3">💿</div>
+            <div class="musical-icon icon-4">🎧</div>
         </div>
 
-        <div className="max-w-6xl mx-auto relative z-10">
-          <motion.div 
-            className="flex flex-col md:flex-row items-center gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.div variants={itemVariants}>
-              <ImageWithFallback
-                src="cho.jpg"
-                alt="証明写真"
-                className="w-40 h-40 rounded-full border-4 border-white shadow-2xl object-cover"
-              />
-            </motion.div>
+        <div class="header-content">
+            <img src="cho.jpg" alt="証明写真" class="profile-img" onerror="this.style.display='none'">
             
-            <motion.div className="flex-1 text-center md:text-left" variants={itemVariants}>
-              <h1 className="mb-2">曺 現煌 (CHO HYUNHWANG)</h1>
-              <p className="text-xl mb-4 text-blue-100">1994年2月10日生 (満31歳)</p>
-              
-              <div className="flex flex-wrap gap-4 justify-center md:justify-start text-sm">
-                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                  <Mail className="w-4 h-4" />
-                  <span>whgusghkd777@gmail.com</span>
+            <div class="header-info">
+                <h1>曺 現煌 (CHO HYUNHWANG)</h1>
+                <p class="header-subtitle">1994年2月10日生 (満31歳)</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span>✉️</span>
+                        <span>whgusghkd777@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span>📱</span>
+                        <span>+82-10-7481-2589</span>
+                    </div>
                 </div>
-                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                  <Phone className="w-4 h-4" />
-                  <span>+82-10-7481-2589</span>
+                <div class="contact-info" style="margin-top: 0.5rem;">
+                    <div class="contact-item">
+                        <span>📍</span>
+                        <span>〒04713 ソウル特別市 城東区 行堂路79番地、104棟603号室</span>
+                    </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2 justify-center md:justify-start mt-3 text-sm">
-                <MapPin className="w-4 h-4" />
-                <span>〒04713 ソウル特別市 城東区 行堂路79番地、104棟603号室</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Wave Decoration */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1200 120" className="w-full h-12">
-            <path 
-              d="M0,60 C200,100 400,20 600,60 C800,100 1000,20 1200,60 L1200,120 L0,120 Z" 
-              fill="rgb(239 246 255)"
-            />
-          </svg>
-        </div>
-      </motion.header>
-
-      {/* Navigation */}
-      <motion.nav 
-        className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex overflow-x-auto gap-2 py-4">
-            {sections.map((section) => {
-              const Icon = section.icon;
-              return (
-                <button
-                  key={section.id}
-                  onClick={() => setActiveSection(section.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-full whitespace-nowrap transition-all ${
-                    activeSection === section.id
-                      ? "bg-gradient-to-r from-blue-500 to-green-500 text-white shadow-lg scale-105"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  {section.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </motion.nav>
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-6 py-12 relative z-10">
-        <motion.div
-          key={activeSection}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          {/* Motivation Section */}
-          {activeSection === "motivation" && (
-            <div className="space-y-8">
-              <motion.div 
-                className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-blue-100"
-                variants={itemVariants}
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-gradient-to-r from-blue-500 to-green-500 p-3 rounded-xl">
-                    <Sparkles className="w-6 h-6 text-white" />
-                  </div>
-                  <h2 className="text-blue-600">志望動機</h2>
-                </div>
-                <div className="space-y-4 text-gray-700 leading-relaxed">
-                  <p>
-                    私は以前、日本で勤務した経験があり、その中で日本の職人精神に深く感銘を受けました。楽器店で働いた時、お客様一人ひとりのニーズに寄り添った提案を行い、最後まで責任を持って対応する姿勢に心を打たれました。この経験を通じて、仕事に誇りを持ち、細部にまでこだわることの大切さを学びました。IT分野においても、同様に品質へのこだわりを持ち、ユーザーに安心と満足を提供できるサービス開発に取り組みたいと考えています。常に新しい技術が生まれるIT業界において、変化を恐れず学び続けることで、自身の成長につなげたいと思っています。
-                  </p>
-                  <p>
-                    現在はJava・Python・SQLなどの技術を中心に学習を進めており、御社のプロジェクトに参加することで、これらのスキルを実践的に活かしながら、さらに磨きをかけていきたいと考えています。職人のように丁寧で誠実な開発を通じて、チームやユーザーに信頼されるエンジニアを目指してまいります。
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-green-100"
-                variants={itemVariants}
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-gradient-to-r from-green-500 to-blue-500 p-3 rounded-xl">
-                    <Guitar className="w-6 h-6 text-white" />
-                  </div>
-                  <h2 className="text-green-600">自己PR</h2>
-                </div>
-                <div className="space-y-4 text-gray-700 leading-relaxed">
-                  <p>
-                    私の強みは「課題解決力」と「協調性」です。これまで音楽に関する複数のプロジェクトやバンド活動に携わってきました。特に、日本の友人たちと行ったバンド録音では、限られた時間の中で意見の食い違いや音のバランスなど、さまざまな課題がありました。私はメンバーを信頼し、相手の意見を尊重しながら、必要な場面では具体的なフィードバックを伝えることで、最終的に全員が納得できるサウンドを作り上げることができました。
-                  </p>
-                  <p>
-                    この経験から、チーム内で冷静に課題を分析し、柔軟に対応する力、それで互いを信じて協力し合う姿勢の重要性を学びました。IT業界においても、開発現場では多くのメンバーが関わり、それぞれの意見や役割を調整しながら成果物を完成させていきます。私は音楽制作で培ったコミュニケーション力と協調性を活かし、チーム全体の成果に貢献したいと考えています。常に学ぶ姿勢を持ち、技術力だけでなくチームとの連携を重視しながら、御社のプロジェクトに誠実に取り組んでまいります。
-                  </p>
-                </div>
-              </motion.div>
             </div>
-          )}
+        </div>
 
-          {/* Projects Section */}
-          {activeSection === "projects" && (
-            <div className="space-y-8">
-              <motion.div 
-                className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-l-8 border-blue-500"
-                variants={itemVariants}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <Code2 className="w-6 h-6 text-blue-600" />
-                  <h3 className="text-blue-600">デジ楽 (ホテル予約サイト)</h3>
+        <svg class="wave-decoration" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,60 C200,100 400,20 600,60 C800,100 1000,20 1200,60 L1200,120 L0,120 Z" fill="#e3f2fd"/>
+        </svg>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('motivation')">
+                    <span class="nav-icon">✨</span>
+                    <span>志望動機・自己PR</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('projects')">
+                    <span class="nav-icon">💻</span>
+                    <span>プロジェクト</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('history')">
+                    <span class="nav-icon">🎓</span>
+                    <span>学歴・職歴・資格</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('skills')">
+                    <span class="nav-icon">🎵</span>
+                    <span>スキル・特技</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Motivation Section -->
+        <div id="motivation" class="section active">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">✨</div>
+                    <h2>志望動機</h2>
+                </div>
+                <div class="text-content">
+                    <p style="margin-bottom: 1rem;">
+                        私は以前、日本で勤務した経験があり、その中で日本の職人精神に深く感銘を受けました。楽器店で働いた時、お客様一人ひとりのニーズに寄り添った提案を行い、最後まで責任を持って対応する姿勢に心を打たれました。この経験を通じて、仕事に誇りを持ち、細部にまでこだわることの大切さを学びました。IT分野においても、同様に品質へのこだわりを持ち、ユーザーに安心と満足を提供できるサービス開発に取り組みたいと考えています。常に新しい技術が生まれるIT業界において、変化を恐れず学び続けることで、自身の成長につなげたいと思っています。
+                    </p>
+                    <p>
+                        現在はJava・Python・SQLなどの技術を中心に学習を進めており、御社のプロジェクトに参加することで、これらのスキルを実践的に活かしながら、さらに磨きをかけていきたいと考えています。職人のように丁寧で誠実な開発を通じて、チームやユーザーに信頼されるエンジニアを目指してまいります。
+                    </p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 6px solid #4caf50;">
+                <div class="card-header">
+                    <div class="card-icon" style="background: linear-gradient(135deg, #4caf50, #2196f3);">🎸</div>
+                    <h2 style="color: #4caf50;">自己PR</h2>
+                </div>
+                <div class="text-content">
+                    <p style="margin-bottom: 1rem;">
+                        私の強みは「課題解決力」と「協調性」です。これまで音楽に関する複数のプロジェクトやバンド活動に携わってきました。特に、日本の友人たちと行ったバンド録音では、限られた時間の中で意見の食い違いや音のバランスなど、さまざまな課題がありました。私はメンバーを信頼し、相手の意見を尊重しながら、必要な場面では具体的なフィードバックを伝えることで、最終的に全員が納得できるサウンドを作り上げることができました。
+                    </p>
+                    <p>
+                        この経験から、チーム内で冷静に課題を分析し、柔軟に対応する力、それで互いを信じて協力し合う姿勢の重要性を学びました。IT業界においても、開発現場では多くのメンバーが関わり、それぞれの意見や役割を調整しながら成果物を完成させていきます。私は音楽制作で培ったコミュニケーション力と協調性を活かし、チーム全体の成果に貢献したいと考えています。常に学ぶ姿勢を持ち、技術力だけでなくチームとの連携を重視しながら、御社のプロジェクトに誠実に取り組んでまいります。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div id="projects" class="section">
+            <div class="card project-card">
+                <div class="card-header">
+                    <div class="card-icon">💻</div>
+                    <h3>デジ楽 (ホテル予約サイト)</h3>
                 </div>
                 
-                <div className="inline-block bg-gradient-to-r from-blue-500 to-green-500 text-white px-4 py-2 rounded-lg mb-6">
-                  「デジ楽」はSpring MVCを基盤としたホテル予約ウェブアプリケーションで、観光客が手軽にホテル検索・部屋選択・予約・決済まで完結できるサービスを目指しました。
+                <div class="project-tagline">
+                    「デジ楽」はSpring MVCを基盤としたホテル予約ウェブアプリケーションで、観光客が手軽にホテル検索・部屋選択・予約・決済まで完結できるサービスを目指しました。
                 </div>
 
-                <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-6 mb-6">
-                  <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div class="project-meta">
                     <div>
-                      <span className="font-semibold text-blue-600">期間:</span> 2025.10.27 ~ 2025.11.14 (チーム開発 5名)
+                        <strong>期間:</strong> 2025.10.27 ~ 2025.11.14 (チーム開発 5名)
                     </div>
                     <div>
-                      <span className="font-semibold text-blue-600">環境:</span> Java 1.8, Spring, Oracle, Apache Tomcat9, Eclipse
+                        <strong>環境:</strong> Java 1.8, Spring, Oracle, Apache Tomcat9, Eclipse
                     </div>
-                  </div>
                 </div>
 
-                <ul className="space-y-3 mb-6 text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                    <span><strong>役割:</strong> バックエンド開発担当(メイン)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                    <span>Reservation/Payment/Hotel Detailの主要ロジックおよびクエリ実装</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                    <span>予約重複防止のための楽観的ロック処理とトランザクション管理</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                    <span>Gitを使用せず直接調整を行う協働方式で、MVC構造の重要性を学習</span>
-                  </li>
+                <ul class="project-list">
+                    <li><strong>役割:</strong> バックエンド開発担当(メイン)</li>
+                    <li>Reservation/Payment/Hotel Detailの主要ロジックおよびクエリ実装</li>
+                    <li>予約重複防止のための楽観的ロック処理とトランザクション管理</li>
+                    <li>Gitを使用せず直接調整を行う協働方式で、MVC構造の重要性を学習</li>
                 </ul>
 
-                <div className="flex flex-wrap gap-3">
-                  <a 
-                    href="https://github.com/whgusghkd777-debug/dejiraku" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
-                  >
-                    <Github className="w-4 h-4" />
-                    GitHub
-                  </a>
-                  <a 
-                    href="https://url.kr/fnf22j" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Presentation (PPT)
-                  </a>
+                <div class="project-links">
+                    <a href="https://github.com/whgusghkd777-debug/dejiraku" target="_blank" class="project-link github-link">
+                        <span>📂</span>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://url.kr/fnf22j" target="_blank" class="project-link ppt-link">
+                        <span>📊</span>
+                        <span>Presentation (PPT)</span>
+                    </a>
                 </div>
-              </motion.div>
+            </div>
 
-              <motion.div 
-                className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-l-8 border-green-500"
-                variants={itemVariants}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <Music className="w-6 h-6 text-green-600" />
-                  <h3 className="text-green-600">MuSuBi (音楽共有・発見プラットフォーム)</h3>
+            <div class="card project-card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: linear-gradient(135deg, #4caf50, #2196f3);">🎵</div>
+                    <h3 style="color: #4caf50;">MuSuBi (音楽共有・発見プラットフォーム)</h3>
                 </div>
                 
-                <div className="inline-block bg-gradient-to-r from-green-500 to-blue-500 text-white px-4 py-2 rounded-lg mb-4">
-                  「検索しない」音楽体験 — 共感でつながる音楽コミュニティ
+                <div class="project-tagline" style="background: linear-gradient(135deg, #4caf50, #2196f3);">
+                    「検索しない」音楽体験 — 共感でつながる音楽コミュニティ
                 </div>
-                <p className="text-gray-700 mb-6">
-                  再生数操作やランキング至上主義から脱却し、音楽の本質である「共感」を通じて新しいアーティストと出会うプラットフォーム。
+
+                <p class="text-content" style="margin-bottom: 1.5rem;">
+                    再生数操作やランキング至上主義から脱却し、音楽の本質である「共感」を通じて新しいアーティストと出会うプラットフォーム。
                 </p>
 
-                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 mb-6">
-                  <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div class="project-meta">
                     <div>
-                      <span className="font-semibold text-green-600">期間:</span> 2025.12.10 ~ 2025.12.31 (個人開発)
+                        <strong style="color: #4caf50;">期間:</strong> 2025.12.10 ~ 2025.12.31 (個人開発)
                     </div>
                     <div>
-                      <span className="font-semibold text-green-600">環境:</span> Java 17, Spring Boot, Spring Security, JPA, PostgreSQL, VS Code
+                        <strong style="color: #4caf50;">環境:</strong> Java 17, Spring Boot, Spring Security, JPA, PostgreSQL, VS Code
                     </div>
-                  </div>
                 </div>
 
-                <ul className="space-y-3 mb-6 text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
-                    <span><strong>役割:</strong> 企画・設計・実装まで一貫して担当</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
-                    <span>検索機能を意図的に除外し、ランダム再生(ダイス機能)による没入感を優先</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
-                    <span>Spring Securityを用いた認証管理およびJPAによるEntity(1:N, N:M)関連設計</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
-                    <span>推薦数集計によるランキング機能で、新人アーティストに公平な露出機会を提供</span>
-                  </li>
+                <ul class="project-list">
+                    <li><strong>役割:</strong> 企画・設計・実装まで一貫して担当</li>
+                    <li>検索機能を意図的に除外し、ランダム再生(ダイス機能)による没入感を優先</li>
+                    <li>Spring Securityを用いた認証管理およびJPAによるEntity(1:N, N:M)関連設計</li>
+                    <li>推薦数集計によるランキング機能で、新人アーティストに公平な露出機会を提供</li>
                 </ul>
 
-                <div className="flex flex-wrap gap-3">
-                  <a 
-                    href="https://github.com/whgusghkd777-debug/MuSuBiMusic" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
-                  >
-                    <Github className="w-4 h-4" />
-                    GitHub
-                  </a>
-                  <a 
-                    href="https://buly.kr/GvoLgJn" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Presentation (PPT)
-                  </a>
+                <div class="project-links">
+                    <a href="https://github.com/whgusghkd777-debug/MuSuBiMusic" target="_blank" class="project-link github-link">
+                        <span>📂</span>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://buly.kr/GvoLgJn" target="_blank" class="project-link ppt-link">
+                        <span>📊</span>
+                        <span>Presentation (PPT)</span>
+                    </a>
                 </div>
-              </motion.div>
             </div>
-          )}
+        </div>
 
-          {/* History Section */}
-          {activeSection === "history" && (
-            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl">
-              <div className="space-y-8">
-                {/* Education */}
-                <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="bg-gradient-to-r from-blue-500 to-green-500 p-3 rounded-xl">
-                      <GraduationCap className="w-6 h-6 text-white" />
+        <!-- History Section -->
+        <div id="history" class="section">
+            <div class="card">
+                <div class="history-group">
+                    <div class="card-header">
+                        <div class="card-icon">🎓</div>
+                        <h2>学歴</h2>
                     </div>
-                    <h3 className="text-blue-600">学歴</h3>
-                  </div>
-                  <div className="space-y-4">
-                    {[
-                      { period: "2010.03 ~ 2012.02", status: "卒業", detail: "城東高等学校" },
-                      { period: "2013.03 ~ 2017.02", status: "卒業", detail: "百済芸術大学校 実用音楽学科 ベース専攻(専門学校2年制)" },
-                      { period: "2025.7 ~ 2025.12", status: "修了", detail: "株式会社 Global in 海外就職教育センター (ITコース4期)" },
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        className="flex flex-col md:flex-row gap-4 p-4 bg-gradient-to-r from-blue-50 to-transparent rounded-xl border-l-4 border-blue-500"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <div className="md:w-48 text-blue-600">{item.period}</div>
-                        <div className="md:w-20 font-semibold text-green-600">{item.status}</div>
-                        <div className="flex-1 text-gray-700">{item.detail}</div>
-                      </motion.div>
-                    ))}
-                  </div>
+                    
+                    <div class="history-item">
+                        <div class="history-period">2010.03 ~ 2012.02</div>
+                        <div class="history-status">卒業</div>
+                        <div class="history-detail">城東高等学校</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-period">2013.03 ~ 2017.02</div>
+                        <div class="history-status">卒業</div>
+                        <div class="history-detail">百済芸術大学校 実用音楽学科 ベース専攻(専門学校2年制)</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-period">2025.7 ~ 2025.12</div>
+                        <div class="history-status">修了</div>
+                        <div class="history-detail">株式会社 Global in 海外就職教育センター (ITコース4期)</div>
+                    </div>
                 </div>
 
-                {/* Work Experience */}
-                <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="bg-gradient-to-r from-green-500 to-blue-500 p-3 rounded-xl">
-                      <Briefcase className="w-6 h-6 text-white" />
+                <div class="history-group">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #4caf50, #2196f3);">💼</div>
+                        <h2 style="color: #4caf50;">職歴</h2>
                     </div>
-                    <h3 className="text-green-600">職歴</h3>
-                  </div>
-                  <div className="space-y-4">
-                    {[
-                      { period: "2017.01 ~ 2018.2", status: "退社", detail: "IFC セキュリティチーム VIP警護業務" },
-                      { period: "2019.04 ~ 2020.05", status: "退社", detail: "ウリ銀行 施設警備・来訪者対応" },
-                      { period: "2021.07 ~ 2023.12", status: "退社", detail: "シンハン銀行 顧客対応・セキュリティ監視" },
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        className="flex flex-col md:flex-row gap-4 p-4 bg-gradient-to-r from-green-50 to-transparent rounded-xl border-l-4 border-green-500"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <div className="md:w-48 text-green-600">{item.period}</div>
-                        <div className="md:w-20 font-semibold text-blue-600">{item.status}</div>
-                        <div className="flex-1 text-gray-700">{item.detail}</div>
-                      </motion.div>
-                    ))}
-                  </div>
+                    
+                    <div class="history-item" style="background: linear-gradient(135deg, #e8f5e9, transparent); border-left-color: #4caf50;">
+                        <div class="history-period" style="color: #4caf50;">2017.01 ~ 2018.2</div>
+                        <div class="history-status">退社</div>
+                        <div class="history-detail">IFC セキュリティチーム VIP警護業務</div>
+                    </div>
+                    <div class="history-item" style="background: linear-gradient(135deg, #e8f5e9, transparent); border-left-color: #4caf50;">
+                        <div class="history-period" style="color: #4caf50;">2019.04 ~ 2020.05</div>
+                        <div class="history-status">退社</div>
+                        <div class="history-detail">ウリ銀行 施設警備・来訪者対応</div>
+                    </div>
+                    <div class="history-item" style="background: linear-gradient(135deg, #e8f5e9, transparent); border-left-color: #4caf50;">
+                        <div class="history-period" style="color: #4caf50;">2021.07 ~ 2023.12</div>
+                        <div class="history-status">退社</div>
+                        <div class="history-detail">シンハン銀行 顧客対応・セキュリティ監視</div>
+                    </div>
                 </div>
 
-                {/* Certifications */}
-                <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="bg-gradient-to-r from-blue-500 to-green-500 p-3 rounded-xl">
-                      <Award className="w-6 h-6 text-white" />
+                <div class="history-group">
+                    <div class="card-header">
+                        <div class="card-icon">🏆</div>
+                        <h2>資格</h2>
                     </div>
-                    <h3 className="text-blue-600">資格</h3>
-                  </div>
-                  <div className="space-y-4">
-                    {[
-                      { period: "2025.7", status: "取得", detail: "日本語能力試験(JLPT) N3" },
-                      { period: "2025.11", status: "取得", detail: "日本語能力試験(JPT) 580点" },
-                      { period: "2025.12", status: "受験", detail: "日本語能力試験(JLPT) N2 (1月結果発表予定)" },
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        className="flex flex-col md:flex-row gap-4 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl border-l-4 border-blue-500"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <div className="md:w-48 text-blue-600">{item.period}</div>
-                        <div className="md:w-20 font-semibold text-green-600">{item.status}</div>
-                        <div className="flex-1 text-gray-700">{item.detail}</div>
-                      </motion.div>
-                    ))}
-                  </div>
+                    
+                    <div class="history-item">
+                        <div class="history-period">2025.7</div>
+                        <div class="history-status">取得</div>
+                        <div class="history-detail">日本語能力試験(JLPT) N3</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-period">2025.11</div>
+                        <div class="history-status">取得</div>
+                        <div class="history-detail">日本語能力試験(JPT) 580点</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-period">2025.12</div>
+                        <div class="history-status">受験</div>
+                        <div class="history-detail">日本語能力試験(JLPT) N2 (1月結果発表予定)</div>
+                    </div>
                 </div>
-              </div>
             </div>
-          )}
+        </div>
 
-          {/* Skills Section */}
-          {activeSection === "skills" && (
-            <div className="space-y-8">
-              <motion.div 
-                className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl"
-                variants={itemVariants}
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-gradient-to-r from-blue-500 to-green-500 p-3 rounded-xl">
-                    <Code2 className="w-6 h-6 text-white" />
-                  </div>
-                  <h2 className="text-blue-600">保有スキル</h2>
+        <!-- Skills Section -->
+        <div id="skills" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">💻</div>
+                    <h2>保有スキル</h2>
                 </div>
                 
-                <div className="flex flex-wrap gap-3 mb-8">
-                  {[
-                    "Java (1.8 / 17)",
-                    "Spring / Spring Boot",
-                    "JSP / Servlet",
-                    "Python",
-                    "Oracle / PostgreSQL",
-                    "Spring Security / JPA",
-                    "日本語 (JLPT N2レベル)"
-                  ].map((skill, index) => (
-                    <motion.div
-                      key={skill}
-                      className="px-5 py-3 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-full shadow-lg"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.05 }}
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      {skill}
-                    </motion.div>
-                  ))}
+                <div class="skills-grid">
+                    <div class="skill-tag">Java (1.8 / 17)</div>
+                    <div class="skill-tag">Spring / Spring Boot</div>
+                    <div class="skill-tag">JSP / Servlet</div>
+                    <div class="skill-tag">Python</div>
+                    <div class="skill-tag">Oracle / PostgreSQL</div>
+                    <div class="skill-tag">Spring Security / JPA</div>
+                    <div class="skill-tag">日本語 (JLPT N2レベル)</div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-gradient-to-br from-blue-50 to-green-50 p-6 rounded-2xl">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Guitar className="w-5 h-5 text-blue-600" />
-                      <h3 className="text-blue-600">特技</h3>
+                <div class="specialty-grid">
+                    <div class="specialty-card">
+                        <div class="specialty-title">
+                            <span>🎸</span>
+                            <span>特技</span>
+                        </div>
+                        <p>音楽編集(Cubase)、ベースおよびエレキギター演奏</p>
                     </div>
-                    <p className="text-gray-700">音楽編集(Cubase)、ベースおよびエレキギター演奏</p>
-                  </div>
-                  
-                  <div className="bg-gradient-to-br from-green-50 to-blue-50 p-6 rounded-2xl">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Headphones className="w-5 h-5 text-green-600" />
-                      <h3 className="text-green-600">趣味</h3>
+                    
+                    <div class="specialty-card">
+                        <div class="specialty-title">
+                            <span>🎧</span>
+                            <span>趣味</span>
+                        </div>
+                        <p>登山、ランニング、筋力トレーニング、作曲</p>
                     </div>
-                    <p className="text-gray-700">登山、ランニング、筋力トレーニング、作曲</p>
-                  </div>
                 </div>
-              </motion.div>
+            </div>
 
-              <motion.div 
-                className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl"
-                variants={itemVariants}
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-gradient-to-r from-green-500 to-blue-500 p-3 rounded-xl">
-                    <ExternalLink className="w-6 h-6 text-white" />
-                  </div>
-                  <h2 className="text-green-600">外部リンク</h2>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: linear-gradient(135deg, #4caf50, #2196f3);">🔗</div>
+                    <h2 style="color: #4caf50;">外部リンク</h2>
                 </div>
                 
-                <div className="space-y-4">
-                  <a 
-                    href="https://github.com/whgusghkd777-debug" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-4 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-colors group"
-                  >
-                    <Github className="w-6 h-6 group-hover:scale-110 transition-transform" />
-                    <div>
-                      <div className="font-semibold">GitHub</div>
-                      <div className="text-sm text-gray-300">github.com/whgusghkd777-debug</div>
-                    </div>
-                  </a>
-                  
-                  <a 
-                    href="https://url.kr/xt4qjr" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-xl hover:shadow-lg transition-shadow group"
-                  >
-                    <ExternalLink className="w-6 h-6 group-hover:scale-110 transition-transform" />
-                    <div>
-                      <div className="font-semibold">Technical Blog</div>
-                      <div className="text-sm text-blue-100">Learning Records (Notion)</div>
-                    </div>
-                  </a>
+                <div class="external-links">
+                    <a href="https://github.com/whgusghkd777-debug" target="_blank" class="external-link github-card">
+                        <div style="font-size: 2rem;">📂</div>
+                        <div>
+                            <div class="link-title">GitHub</div>
+                            <div class="link-url">github.com/whgusghkd777-debug</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://url.kr/xt4qjr" target="_blank" class="external-link blog-card">
+                        <div style="font-size: 2rem;">📝</div>
+                        <div>
+                            <div class="link-title">Technical Blog</div>
+                            <div class="link-url">Learning Records (Notion)</div>
+                        </div>
+                    </a>
                 </div>
-              </motion.div>
             </div>
-          )}
-        </motion.div>
-      </main>
+        </div>
+    </main>
 
-      {/* Footer */}
-      <motion.footer 
-        className="relative bg-gradient-to-r from-blue-600 via-green-500 to-blue-600 text-white py-12 mt-20"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-      >
-        <div className="absolute inset-0 opacity-10">
-          <Disc3 className="absolute top-5 left-10 w-8 h-8" />
-          <Music className="absolute bottom-5 right-10 w-8 h-8" />
+    <!-- Footer -->
+    <footer>
+        <div class="musical-icons">
+            <div class="musical-icon icon-1">💿</div>
+            <div class="musical-icon icon-2">🎵</div>
         </div>
-        
-        <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
-          <p className="text-lg">&copy; 2026 CHO HYUNHWANG | GitHub Pagesで公開中</p>
-          <p className="text-sm text-blue-100 mt-2">音楽とITの架け橋を目指して</p>
+        <div class="footer-content">
+            <p style="font-size: 1.2rem; margin-bottom: 0.5rem;">&copy; 2026 CHO HYUNHWANG | GitHub Pagesで公開中</p>
+            <p class="footer-subtitle">音楽とITの架け橋を目指して</p>
         </div>
-      </motion.footer>
-    </div>
-  );
-}
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected section
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+
+            // Add active class to clicked button
+            event.target.closest('.nav-btn').classList.add('active');
+
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Smooth scroll for navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add entrance animations
+            setTimeout(() => {
+                document.querySelector('header').style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
